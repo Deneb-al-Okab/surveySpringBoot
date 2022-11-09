@@ -26,7 +26,7 @@ public class Survey {
     @Column(name = "publish_date")
     private Calendar publishDate;
 
-    @Column(name = "mail")
+    @Column(name = "ending_date")
     private Calendar endingDate;
 
     public Survey(String idMail, int idCategory, String name, String description, Calendar publishDate, Calendar endingDate) {
