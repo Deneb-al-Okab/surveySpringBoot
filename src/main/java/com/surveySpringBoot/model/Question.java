@@ -19,8 +19,8 @@ public class Question {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "question_answer",
-            joinColumns        = { @JoinColumn(name = "id_answer") },
-            inverseJoinColumns = { @JoinColumn(name = "id") })
+            joinColumns        = { @JoinColumn(name = "id_question") },
+            inverseJoinColumns = { @JoinColumn(name = "id_answer") })
     private List<Answer> answers = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.EAGER, optional = false)

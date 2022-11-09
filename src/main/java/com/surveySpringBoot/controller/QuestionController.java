@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("survey/api")
+@RequestMapping("surveySpringBoot/api")
 
 public class QuestionController {
 

@@ -13,9 +13,9 @@ public class Survey {
 
     @Column(name = "id_mail")
     private String idMail;
-
-    @Column(name = "category")
-    private String category;
+    @OneToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "id_category", nullable = false, insertable = false, updatable = false)
+    private Category category;
 
     @Column(name = "name")
     private String name;
@@ -49,7 +49,7 @@ public class Survey {
         return idMail;
     }
 
-    public String getIdCategory() {
+    public Category getIdCategory() {
         return category;
     }
 
@@ -73,7 +73,7 @@ public class Survey {
         this.idMail = idMail;
     }
 
-    public void setIdCategory(String idCategory) {
+    public void setIdCategory(Category idCategory) {
         this.category = idCategory;
     }
 
