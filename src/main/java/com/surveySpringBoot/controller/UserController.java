@@ -34,23 +34,18 @@ public class UserController {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
-    public ResponseEntity<String> checkUser(@RequestBody User user) {
+    public ResponseEntity<User> checkUser(@RequestBody User user) {
         try {
             Optional<User> _user = repository.findByMail(user.getMail());
 
             HttpStatus status = HttpStatus.UNAUTHORIZED;
             String adm ="error";
             if (_user.isPresent() && _user.get().getPass().equals(user.getPass())) {
-                if (_user.get().getIsAdmin()==1){
-                    status = HttpStatus.OK;
-                    adm = "yes";
-                }
-                else{
-                    status = HttpStatus.OK;
-                    adm = "no";
-                }
+                User usr = new User(_user.get().getMail(), _user.get().getPass(), _user.get().getIsAdmin());
+                status = HttpStatus.OK;
+                return new ResponseEntity<>(usr, status);
             }
-            return new ResponseEntity<>(adm, status);
+            return new ResponseEntity<>(null, status);
         } catch (Exception e) {
             //e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -73,6 +68,28 @@ public class UserController {
 
             User newUser = repository.save(new User(user.getMail(), user.getPass(), user.getIsAdmin()));
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(
+            value = "/update-adm",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+    )
+    public ResponseEntity<User> updateAdm(@RequestBody User user) {
+        try {
+            //System.out.println(user.toString());
+            Optional<User> _user = repository.findByMail(user.getMail());
+
+            if (_user.isPresent()) {
+                System.out.println(_user.toString());
+            }
+
+
+            return new ResponseEntity<>(null, HttpStatus.ACCEPTED);
         }
         catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
