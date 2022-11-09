@@ -29,7 +29,7 @@ public class Survey {
     @Column(name = "ending_date")
     private Calendar endingDate;
 
-    public Survey(String idMail, int idCategory, String name, String description, Calendar publishDate, Calendar endingDate) {
+    public Survey(String idMail, Category category, String name, String description, Calendar publishDate, Calendar endingDate) {
         this.idMail = idMail;
         this.category = category;
         this.name = name;
@@ -49,7 +49,7 @@ public class Survey {
         return idMail;
     }
 
-    public Category getIdCategory() {
+    public Category getCategory() {
         return category;
     }
 
@@ -73,8 +73,8 @@ public class Survey {
         this.idMail = idMail;
     }
 
-    public void setIdCategory(Category idCategory) {
-        this.category = idCategory;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public void setName(String name) {

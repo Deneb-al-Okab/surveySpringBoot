@@ -37,4 +37,22 @@ public class SurveyController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
+    @GetMapping("/surveys/{mail}")
+    public ResponseEntity<List<Survey>> getDoneSurveys(@PathVariable("mail") String mail) {
+        try {
+            List<Survey> surveys = new ArrayList<Survey>();
+
+//        repository.findAll().forEach(surveys::add);
+            surveys.addAll(repository.findAll());
+
+            if (surveys.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(surveys, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
