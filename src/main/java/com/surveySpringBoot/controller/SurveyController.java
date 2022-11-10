@@ -7,6 +7,7 @@ import com.surveySpringBoot.model.User;
 import com.surveySpringBoot.repository.SurveyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +26,7 @@ public class SurveyController {
     SurveyRepository repository;
 
     @GetMapping("/surveys")
-    public ResponseEntity<List<Survey>> getAllSurveys(@RequestBody User user) {
+    public ResponseEntity<List<Survey>> getAllSurveys() {
         try {
         List<Survey> surveys = new ArrayList<Survey>();
 
@@ -42,12 +43,14 @@ public class SurveyController {
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
       }
     }
-    @GetMapping("/surveysToDo")
+    @GetMapping(value = "/surveysToDo"
+            )
     public ResponseEntity<List<Survey>> getToDoSurveys(
             @RequestParam(defaultValue = "0")  int start,
             @RequestParam(defaultValue = "10") int step,
-            @RequestBody  String mail) {
+            @RequestParam  String mail) {
         try {
+            System.out.println("Mail = " + mail);
             List<Survey> surveys = new ArrayList<Survey>();
             repository.SurveyToDo(mail,start,step).forEach(surveys::add);
             if (surveys.isEmpty()) {
@@ -64,7 +67,7 @@ public class SurveyController {
     public ResponseEntity<List<Survey>> getDoneSurveys(
             @RequestParam(defaultValue = "0")  int start,
             @RequestParam(defaultValue = "10") int step,
-            @RequestBody  String mail) {
+            @RequestParam  String mail) {
         try {
             List<Survey> surveys = new ArrayList<Survey>();
             repository.SurveyDone(mail,start,step).forEach(surveys::add);
