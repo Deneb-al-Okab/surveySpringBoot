@@ -13,5 +13,5 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
                 " from survey_composition, question_answer where question_answer.id = survey_composition.id_question_answer " +
                 "and id_survey = ?1 ; ",
         nativeQuery = true)
-    List<QuestionAnswer> getQuestionAnswerByIdSurvey(Integer Id);
+       List<QuestionAnswer> getQuestionAnswerByIdSurvey(Integer Id);
 }

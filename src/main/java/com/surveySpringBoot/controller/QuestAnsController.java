@@ -23,11 +23,7 @@ public class QuestAnsController {
     QuestionAnswerRepository repository;
 
 
-    @GetMapping(
-            value ="/readSurvey",
-            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
-    )
+    @GetMapping("/readSurvey")
     public ResponseEntity<List<QuestionAnswer>> getSurveyQuestAns(@RequestParam int id) {
         try {
             List<QuestionAnswer> qA = new ArrayList<QuestionAnswer>();
