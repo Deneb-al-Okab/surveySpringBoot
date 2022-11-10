@@ -89,7 +89,12 @@ public class Survey {
         this.publishDate = publishDate;
     }
 
+
     public void setEndingDate(Calendar endingDate) {
         this.endingDate = endingDate;
+    }
+    @Override
+    public String toString() {
+        return "Survey [id=" + id + ", name=" + name + "]";
     }
 }

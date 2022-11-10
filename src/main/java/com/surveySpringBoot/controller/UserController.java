@@ -95,5 +95,68 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @DeleteMapping("/users/{mail}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("mail") String mail) {
+        try {
+            repository.deleteById(mail);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        catch(EmptyResultDataAccessException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/users/{mail}")
+    public ResponseEntity<User> updateUser(@PathVariable("mail") String mail, @RequestBody User user) {
+        try {
+            Optional<User> data = repository.findById(mail);
+
+            if (data.isPresent()) {
+                User _user = data.get();
+
+                if (user.getPass() != null) _user.setPass(user.getPass());
+                _user.setIsAdmin(user.getIsAdmin());
+
+                return new ResponseEntity<>(repository.save(_user), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/users-page")
+    public ResponseEntity<List<User>> getAllUsersPage(
+            @RequestParam(defaultValue = "0")  int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestBody Optional<String> sort
+    ) {
+        try {
+            List<Order> orders = new ArrayList<>();
+
+            if (sort.isPresent()) {
+                String sorts = sort.get();
+                Gson gson = new Gson();
+                SortCriteria[] criteria = gson.fromJson(sorts, SortCriteria[].class);
+                for(SortCriteria criteriaI : criteria) {
+                    orders.add(new Order(criteriaI.getSortDirection(), criteriaI.getField()));
+                }
+            }
+
+            Pageable pageCurrent   = PageRequest.of(page, size, Sort.by(orders));
+            Page<User> pageRecords = repository.findAll(pageCurrent);
+
+            List<User> users = pageRecords.getContent();
+
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
 }
