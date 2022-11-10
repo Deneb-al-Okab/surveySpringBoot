@@ -34,4 +34,21 @@ public class QuestionController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/surveyQ")
+    public ResponseEntity<List<Question>> getSurveyQuestions() {
+        try {
+            List<Question> questions = new ArrayList<Question>();
+
+            repository.findAll().forEach(questions::add);
+
+            if (questions.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(questions, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

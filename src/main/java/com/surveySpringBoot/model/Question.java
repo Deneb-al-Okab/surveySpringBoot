@@ -14,9 +14,6 @@ public class Question {
     @Column(name = "question")
     private String question;
 
-    @Column(name = "id_category")
-    private long categoryId;
-
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "question_answer",
             joinColumns        = { @JoinColumn(name = "id_question") },
@@ -31,9 +28,11 @@ public class Question {
 
     }
 
-    public Question(String question, long categoryId) {
-        this.question   = question;
-        this.categoryId = categoryId;
+    public Question(long id, String question, List<Answer> answers, Category category) {
+        this.id = id;
+        this.question = question;
+        this.answers = answers;
+        this.category = category;
     }
 
     public long getId() {
@@ -48,13 +47,6 @@ public class Question {
         this.question = question;
     }
 
-    public long getCategoryId() {
-        return this.categoryId;
-    }
-
-    public void setCategoryId(long categoryId) {
-        this.categoryId = categoryId;
-    }
 
     public List<Answer> getAnswers() {
         return answers;
@@ -66,7 +58,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question [id=" + id + ", question=" + question + ", categoryId=" + categoryId + "]";
+        return "Question [id=" + id + ", question=" + question + "]";
     }
 
 }
