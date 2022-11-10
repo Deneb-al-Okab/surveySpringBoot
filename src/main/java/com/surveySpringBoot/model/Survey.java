@@ -12,8 +12,8 @@ public class Survey {
 
     @Column(name = "id_mail")
     private String idMail;
-    @OneToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "id_category", nullable = false, insertable = false, updatable = false)
+    @OneToOne(optional = false)
+    @JoinColumn(name = "id_category", nullable = false)
     private Category category;
 
     @Column(name = "name")
