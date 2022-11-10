@@ -56,7 +56,6 @@ public class SurveyController {
             if (surveys.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-
             return new ResponseEntity<>(surveys, HttpStatus.OK);
         }
         catch (Exception e) {
@@ -76,6 +75,26 @@ public class SurveyController {
             }
 
             return new ResponseEntity<>(surveys, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @PostMapping(
+            value = "/createSurvey",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+    )
+    public ResponseEntity<Survey> createSurvey(@RequestBody Survey sur) {
+        try {
+            System.out.println(sur.toString());
+            Optional<Survey> _sur = repository.findById(sur.getId());
+            if (_sur.isPresent()) {
+                return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            }
+
+            Survey newSurvey = repository.save(new Survey(sur.getIdMail(),sur.getCategory(),sur.getName(),sur.getDescription(),sur.getPublishDate(),sur.getEndingDate()));
+            return new ResponseEntity<>(newSurvey, HttpStatus.CREATED);
         }
         catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);

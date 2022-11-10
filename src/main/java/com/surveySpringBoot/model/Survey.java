@@ -1,5 +1,4 @@
 package com.surveySpringBoot.model;
-import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Calendar;
 
@@ -8,7 +7,7 @@ import java.util.Calendar;
 
 public class Survey {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "id_mail")
@@ -94,7 +93,7 @@ public class Survey {
         this.endingDate = endingDate;
     }
     @Override
-    public String toString() {
-        return "Survey [id=" + id + ", name=" + name + "]";
+    public  String toString() {
+        return "Survey [id=" + id + ", name=" + name + "category " + category;
     }
 }

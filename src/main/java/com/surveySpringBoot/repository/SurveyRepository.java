@@ -2,6 +2,7 @@ package com.surveySpringBoot.repository;
 
 import com.surveySpringBoot.model.Answer;
 import com.surveySpringBoot.model.Survey;
+import com.surveySpringBoot.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,8 +11,10 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public interface SurveyRepository extends JpaRepository<Survey, String> {
+    Optional<Survey> findById(long  id);
 
     @Query(
             value = "select * " +
