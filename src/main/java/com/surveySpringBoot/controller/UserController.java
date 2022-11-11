@@ -59,7 +59,7 @@ public class UserController {
     )
     public ResponseEntity<User> createUser(@RequestBody User user) {
         try {
-            System.out.println(user.toString());
+            //System.out.println(user.toString());
             Optional<User> _user = repository.findByMail(user.getMail());
 
             if (_user.isPresent()) {
