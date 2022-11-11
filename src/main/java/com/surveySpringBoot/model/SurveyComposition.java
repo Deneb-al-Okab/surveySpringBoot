@@ -46,7 +46,7 @@ class SurveyCompositionPK implements Serializable {
         this.id_survey = id_survey;
         this.id_question_answer = id_question_answer;
     }
-    @Override
+/*    @Override
     public boolean equals (Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -57,6 +57,6 @@ class SurveyCompositionPK implements Serializable {
     public int hashCode () {
         System.out.println(Objects.hash(this.id_survey, this.id_question_answer));
         return Objects.hash(this.id_survey, this.id_question_answer);
-    }
+    }*/
 
 }
