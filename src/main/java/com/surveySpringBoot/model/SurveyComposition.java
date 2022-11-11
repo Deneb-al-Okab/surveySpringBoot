@@ -1,9 +1,11 @@
 package com.surveySpringBoot.model;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 
+@IdClass(SurveyCompositionPK.class)
 @Entity
 @Table(name = "survey_composition")
 public class SurveyComposition {
