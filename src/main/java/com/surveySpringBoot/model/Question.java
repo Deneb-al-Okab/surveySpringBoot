@@ -14,11 +14,11 @@ public class Question {
     @Column(name = "question")
     private String question;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+/*    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "question_answer",
             joinColumns        = { @JoinColumn(name = "id_question") },
             inverseJoinColumns = { @JoinColumn(name = "id_answer") })
-    private List<Answer> answers = new ArrayList<>();
+    private List<Answer> answers = new ArrayList<>();*/
 
     @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_category", nullable = false, insertable = false, updatable = false)
@@ -31,7 +31,7 @@ public class Question {
     public Question(long id, String question, List<Answer> answers, Category category) {
         this.id = id;
         this.question = question;
-        this.answers = answers;
+//        this.answers = answers;
         this.category = category;
     }
 
@@ -48,9 +48,9 @@ public class Question {
     }
 
 
-    public List<Answer> getAnswers() {
+/*    public List<Answer> getAnswers() {
         return answers;
-    }
+    }*/
 
     public Category getCategory() {
         return category;
