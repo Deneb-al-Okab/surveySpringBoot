@@ -29,13 +29,13 @@ public class SubmittedSurveyController extends SubmittedSurvey {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
-    public ResponseEntity<SubmittedSurvey> createSubSurvey(@RequestBody SubmittedSurvey SubS) {
+    public ResponseEntity<HttpStatus> createSubSurvey(@RequestBody SubmittedSurvey SubS) {
         try {
             SubmittedSurvey newSubS = repository.save(new SubmittedSurvey(SubS.getId_survey(), SubS.getId_mail()));
-            return new ResponseEntity<>(newSubS, HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
         catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
