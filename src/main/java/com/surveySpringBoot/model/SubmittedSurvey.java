@@ -7,25 +7,26 @@ import javax.persistence.*;
 public class SubmittedSurvey {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name="id_survey")
-    private long id_survey;
+    private long idSurvey;
 
     @Column(name="id_mail")
-    private String id_mail;
+    private String idMail;
 
     @OneToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "id_survey", nullable = false, insertable = false, updatable = false)
     private Survey survey;
 
     public SubmittedSurvey(long id_survey, String id_mail) {
-        this.id_survey = id_survey;
-        this.id_mail = id_mail;
+        this.idSurvey = id_survey;
+        this.idMail = id_mail;
     }
 
     public SubmittedSurvey() {
+
 
     }
 
@@ -33,20 +34,20 @@ public class SubmittedSurvey {
         return id;
     }
 
-    public long getId_survey() {
-        return id_survey;
+    public long getIdSurvey() {
+        return idSurvey;
     }
 
-    public String getId_mail() {
-        return id_mail;
+    public String getIdMail() {
+        return idMail;
     }
 
 
-    public void setId_survey(long id_survey) {
-        this.id_survey = id_survey;
+    public void setIdSurvey(long id_survey) {
+        this.idSurvey = id_survey;
     }
 
-    public void setId_mail(String id_mail) {
-        this.id_mail = id_mail;
+    public void setIdMail(String id_mail) {
+        this.idMail = id_mail;
     }
 }

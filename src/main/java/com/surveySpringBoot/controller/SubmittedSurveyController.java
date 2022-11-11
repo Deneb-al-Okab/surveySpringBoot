@@ -30,8 +30,14 @@ public class SubmittedSurveyController extends SubmittedSurvey {
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
     public ResponseEntity<HttpStatus> createSubSurvey(@RequestBody SubmittedSurvey SubS) {
+        System.out.println("prima del primo try");
         try {
-            SubmittedSurvey newSubS = repository.save(new SubmittedSurvey(SubS.getId_survey(), SubS.getId_mail()));
+            Optional<SubmittedSurvey> _SubS = repository.findByIdSurveyAndIdMail(SubS.getIdSurvey(), SubS.getIdMail());
+            if (_SubS.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+
+            SubmittedSurvey newSubS = repository.save(new SubmittedSurvey(SubS.getIdSurvey(), SubS.getIdMail()));
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         catch (Exception e) {
