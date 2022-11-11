@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,6 +58,11 @@ public class SurveyController {
             if (surveys.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+            for (Survey s: surveys) {
+                if (s.getEndingDate().before(Calendar.getInstance())) {
+                    surveys.remove(s);
+                }
+            }
             return new ResponseEntity<>(surveys, HttpStatus.OK);
         }
         catch (Exception e) {
@@ -92,7 +99,6 @@ public class SurveyController {
             if (_sur.isPresent()) {
                 return new ResponseEntity<>(null, HttpStatus.CONFLICT);
             }
-
             Survey newSurvey = repository.save(new Survey(sur.getIdMail(),sur.getCategory(),sur.getName(),sur.getDescription(),sur.getPublishDate(),sur.getEndingDate()));
             return new ResponseEntity<>(newSurvey, HttpStatus.CREATED);
         }
