@@ -94,11 +94,16 @@ public class SurveyController {
     )
     public ResponseEntity<Survey> createSurvey(@RequestBody Survey sur) {
         try {
-            System.out.println(sur.toString());
+            //System.out.println(sur.toString());
             Optional<Survey> _sur = repository.findById(sur.getId());
             if (_sur.isPresent()) {
                 return new ResponseEntity<>(null, HttpStatus.CONFLICT);
             }
+
+            if (sur.getEndingDate().before(sur.getPublishDate())){
+                return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+            }
+
             Survey newSurvey = repository.save(new Survey(sur.getIdMail(),sur.getCategory(),sur.getName(),sur.getDescription(),sur.getPublishDate(),sur.getEndingDate()));
             return new ResponseEntity<>(newSurvey, HttpStatus.CREATED);
         }
