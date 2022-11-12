@@ -32,7 +32,6 @@ public class SurveyController {
         try {
         List<Survey> surveys = new ArrayList<Survey>();
 
-//        repository.findAll().forEach(surveys::add);
         surveys.addAll(repository.findAll());
 
         if (surveys.isEmpty()) {
@@ -52,23 +51,32 @@ public class SurveyController {
             @RequestParam(defaultValue = "10") int step,
             @RequestParam  String mail) {
         try {
-            System.out.println("Mail = " + mail);
+            //System.out.println("Mail = " + mail);
             List<Survey> surveys = new ArrayList<Survey>();
-            repository.SurveyToDo(mail,start,step).forEach(surveys::add);
+            surveys.addAll(repository.SurveyToDo(mail, start, step));
             if (surveys.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            for (Survey s: surveys) {
-                if (s.getEndingDate().before(Calendar.getInstance())) {
-                    surveys.remove(s);
-                }
-            }
+            surveys.removeIf(s -> s.getEndingDate().before(Calendar.getInstance()));
             return new ResponseEntity<>(surveys, HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/howManySurveysToDo")
+    public ResponseEntity<Integer> howManyToDoSurveys(@RequestParam  String mail) {
+        try {
+            Integer howManyToDo = 0;
+            howManyToDo = repository.countHowManyToDo(mail);
+            return new ResponseEntity<>(howManyToDo, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/surveysDone")
     public ResponseEntity<List<Survey>> getDoneSurveys(
             @RequestParam(defaultValue = "0")  int start,
@@ -76,7 +84,7 @@ public class SurveyController {
             @RequestParam  String mail) {
         try {
             List<Survey> surveys = new ArrayList<Survey>();
-            repository.SurveyDone(mail,start,step).forEach(surveys::add);
+            surveys.addAll(repository.SurveyDone(mail, start, step));
             if (surveys.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -87,6 +95,20 @@ public class SurveyController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/howManySurveysDone")
+    public ResponseEntity<Integer> howManyDoneSurveys(@RequestParam  String mail) {
+        try {
+            Integer howManyDone = 0;
+            howManyDone = repository.countHowManyDone(mail);
+            return new ResponseEntity<>(howManyDone, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @PostMapping(
             value = "/createSurvey",
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},

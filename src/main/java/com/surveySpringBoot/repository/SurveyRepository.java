@@ -29,6 +29,17 @@ public interface SurveyRepository extends JpaRepository<Survey, String> {
     List<Survey> SurveyToDo(String id_mail, Integer start, Integer step);
 
     @Query(
+            value = "select COUNT(survey_table.id) " +
+                    "from survey_table " +
+                    "where survey_table.id not in (" +
+                    "SELECT survey_table.id " +
+                    "FROM submitted_survey " +
+                    "left join survey_table on submitted_survey.id_survey = survey_table.id " +
+                    "where submitted_survey.id_mail = ?1 );",
+            nativeQuery = true)
+    Integer countHowManyToDo(String id_mail);
+
+    @Query(
             value = "SELECT * " +
                     "FROM survey_table " +
                     "left join submitted_survey on submitted_survey.id_survey = survey_table.id " +
@@ -36,6 +47,14 @@ public interface SurveyRepository extends JpaRepository<Survey, String> {
                     "limit ?2 , ?3 ; ",
             nativeQuery = true)
     List<Survey> SurveyDone(String id_mail, Integer start, Integer step);
+
+    @Query(
+            value = "SELECT COUNT(survey_table.id) " +
+                    "FROM survey_table " +
+                    "left join submitted_survey on submitted_survey.id_survey = survey_table.id " +
+                    "WHERE submitted_survey.id_mail = ?1 ;",
+            nativeQuery = true)
+    Integer countHowManyDone(String id_mail);
 
 
 
