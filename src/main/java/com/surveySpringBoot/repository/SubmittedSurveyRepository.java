@@ -16,4 +16,6 @@ public interface SubmittedSurveyRepository extends JpaRepository<SubmittedSurvey
     Optional<SubmittedSurvey> findByIdSurveyAndIdMail(long idSurvey, String idMail);
 
 
+
+
 }
