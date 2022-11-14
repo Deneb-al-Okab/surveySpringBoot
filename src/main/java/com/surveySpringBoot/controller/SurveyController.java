@@ -108,6 +108,37 @@ public class SurveyController {
         }
     }
 
+    @GetMapping("/surveysCreated")
+    public ResponseEntity<List<Survey>> getCreatedSurveys(
+            @RequestParam(defaultValue = "0")  int start,
+            @RequestParam(defaultValue = "10") int step,
+            @RequestParam  String mail) {
+        try {
+            List<Survey> surveys = new ArrayList<Survey>();
+            surveys.addAll(repository.findAllByIdMail(mail, start, step));
+            if (surveys.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(surveys, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/howManySurveysCreated")
+    public ResponseEntity<Integer> howManyCreatedSurveys(@RequestParam  String mail) {
+        try {
+            Integer howManyCreated = 0;
+            howManyCreated = repository.countHowManyCreated(mail);
+            return new ResponseEntity<>(howManyCreated, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @PostMapping(
             value = "/createSurvey",
@@ -133,4 +164,7 @@ public class SurveyController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+
 }

@@ -15,5 +15,8 @@ public interface SubmittedSurveyRepository extends JpaRepository<SubmittedSurvey
     @Query("select s from SubmittedSurvey s where s.idSurvey = ?1 and s.idMail = ?2")
     Optional<SubmittedSurvey> findByIdSurveyAndIdMail(long idSurvey, String idMail);
 
-
+    @Query(value = "select count(submitted_survey.id_mail) from submitted_survey" +
+            " where submitted_survey.id_survey = ?1 ;",
+            nativeQuery = true)
+    Integer countHowMany(Integer idSurvey);
 }

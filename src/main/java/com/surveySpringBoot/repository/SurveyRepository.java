@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,5 +58,18 @@ public interface SurveyRepository extends JpaRepository<Survey, String> {
     Integer countHowManyDone(String id_mail);
 
 
+    @Query(
+            value = "SELECT * " +
+                    "FROM survey_table " +
+                    "WHERE survey_table.id_mail = ?1 " +
+                    "limit ?2 , ?3 ; ",
+            nativeQuery = true)
+    List<Survey> findAllByIdMail(String mail, int start, int step);
 
+    @Query(
+            value = "SELECT count(survey_table.id) " +
+                    "FROM survey_table " +
+                    "WHERE survey_table.id_mail = ?1 ; ",
+            nativeQuery = true)
+    Integer countHowManyCreated(String mail);
 }

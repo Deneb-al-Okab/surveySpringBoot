@@ -45,6 +45,18 @@ public class SubmittedSurveyController extends SubmittedSurvey {
         }
     }
 
+    @GetMapping("/howManyResp")
+    public ResponseEntity<Integer> howMany(@RequestParam  Integer id_survey) {
+        try {
+            Integer howManyResp = 0;
+            howManyResp = repository.countHowMany(id_survey);
+            return new ResponseEntity<>(howManyResp, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
 
