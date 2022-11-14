@@ -46,13 +46,6 @@ public class SurveyCompositionController {
     )
     public ResponseEntity<HttpStatus> surveyComposition(@RequestBody SurveyComposition sc) {
         try {
-            //System.out.println(user.toString());
-            //Optional<User> _user = repository.findByMail(user.getMail());
-
-            /*if (_user.isPresent()) {
-                return new ResponseEntity<>(null, HttpStatus.CONFLICT);
-            }*/
-
             SurveyComposition newSC = repository.save(new SurveyComposition(sc.getId_survey(), sc.getId_question_answer()));
             return new ResponseEntity<>(HttpStatus.CREATED);
         }

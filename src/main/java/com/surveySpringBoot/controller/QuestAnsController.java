@@ -1,9 +1,10 @@
 package com.surveySpringBoot.controller;
 
 
-import com.surveySpringBoot.model.Category;
-import com.surveySpringBoot.model.QuestionAnswer;
+import com.surveySpringBoot.model.*;
 import com.surveySpringBoot.repository.QuestionAnswerRepository;
+import com.surveySpringBoot.repository.QuestionRepository;
+import com.surveySpringBoot.repository.SurveyCompositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -21,6 +23,8 @@ import java.util.List;
 public class QuestAnsController {
     @Autowired
     QuestionAnswerRepository repository;
+    @Autowired
+    SurveyCompositionRepository repository2;
 
 
     @GetMapping("/readSurvey")
@@ -59,6 +63,26 @@ public class QuestAnsController {
             return new ResponseEntity<>(qA, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(
+            value = "/createQuestAns",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+    )
+    public ResponseEntity<HttpStatus> createQuestAns(@RequestBody List<QuestionAnswer> questAns,
+                                                          @RequestParam Long id_survey) {
+        try {
+            for(QuestionAnswer q: questAns){
+                QuestionAnswer newQA = repository.save(new QuestionAnswer(q.getId_question(), q.getId_answer()));
+                repository2.save(new SurveyComposition(id_survey, newQA.getId()));
+            }
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            e.printStackTrace(System.out);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

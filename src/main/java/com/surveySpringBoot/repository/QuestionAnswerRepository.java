@@ -1,5 +1,7 @@
 package com.surveySpringBoot.repository;
 
+import com.surveySpringBoot.model.Answer;
+import com.surveySpringBoot.model.Question;
 import com.surveySpringBoot.model.QuestionAnswer;
 import com.surveySpringBoot.model.Survey;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +16,9 @@ public interface QuestionAnswerRepository extends JpaRepository<QuestionAnswer, 
                 "and id_survey = ?1 ; ",
         nativeQuery = true)
        List<QuestionAnswer> getQuestionAnswerByIdSurvey(Integer Id);
+
+    @Query("select q from QuestionAnswer q where q.question = ?1 and q.answer = ?2")
+    List<QuestionAnswer> findByQuestionAndAnswer(Question question, Answer answer);
+
+
 }
