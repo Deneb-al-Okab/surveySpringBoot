@@ -2,6 +2,7 @@ package com.surveySpringBoot.controller;
 
 import com.google.gson.Gson;
 import com.surveySpringBoot.model.Answer;
+import com.surveySpringBoot.model.Survey;
 import com.surveySpringBoot.model.User;
 import com.surveySpringBoot.repository.AnswerRepository;
 import com.surveySpringBoot.tool.SortCriteria;
@@ -25,8 +26,25 @@ public class AnswerController {
 
     @Autowired
     AnswerRepository repository;
-
     @GetMapping("/answers")
+    public ResponseEntity<List<Answer>> getAllSurveys() {
+        try {
+            List<Answer> answers = new ArrayList<Answer>();
+
+            answers.addAll(repository.findAll());
+
+            if (answers.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(answers, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/answers-page")
     public ResponseEntity<List<Answer>> getAllAnswers(
             @RequestParam(defaultValue = "0")  int page,
             @RequestParam(defaultValue = "10") int size,

@@ -51,4 +51,20 @@ public class QuestionController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/category-questions")
+    public ResponseEntity<List<Question>> getCategoryQuestions(@RequestParam long id ) {
+        try {
+            List<Question> questions = new ArrayList<Question>();
+
+            questions.addAll(repository.findByCategory_Id(id));
+
+            if (questions.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(questions, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
