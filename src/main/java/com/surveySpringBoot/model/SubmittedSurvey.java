@@ -27,7 +27,6 @@ public class SubmittedSurvey {
 
     public SubmittedSurvey() {
 
-
     }
 
     public long getId() {
