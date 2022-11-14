@@ -2,6 +2,7 @@ package com.surveySpringBoot.controller;
 
 import com.google.gson.Gson;
 import com.surveySpringBoot.model.Answer;
+import com.surveySpringBoot.model.Question;
 import com.surveySpringBoot.model.Survey;
 import com.surveySpringBoot.model.User;
 import com.surveySpringBoot.repository.AnswerRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
@@ -73,6 +75,22 @@ public class AnswerController {
             return new ResponseEntity<>(answers, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(
+            value = "/createAnswer",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+    )
+    public ResponseEntity<HttpStatus> createQuestAns(@RequestBody Answer answer) {
+        try {
+            Answer newAnswer = repository.save(new Answer(answer.getAnswer()));
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            e.printStackTrace(System.out);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

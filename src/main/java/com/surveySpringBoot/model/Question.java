@@ -8,11 +8,14 @@ import java.util.List;
 @Table(name = "question")
 public class Question {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "question")
     private String question;
+
+    @Column(name = "id_category")
+    private Long id_category;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "question_answer",
@@ -34,10 +37,9 @@ public class Question {
         this.answers = answers;
         this.category = category;
     }
-    public Question( String question, List<Answer> answers, Category category) {
+    public Question( String question, Long id_category) {
         this.question = question;
-        this.answers = answers;
-        this.category = category;
+        this.id_category = id_category;
     }
 
     public long getId() {
@@ -52,6 +54,13 @@ public class Question {
         this.question = question;
     }
 
+    public Long getId_category() {
+        return id_category;
+    }
+
+    public void setId_category(Long id_category) {
+        this.id_category = id_category;
+    }
 
     public List<Answer> getAnswers() {
         return answers;

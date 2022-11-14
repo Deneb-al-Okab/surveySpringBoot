@@ -1,7 +1,9 @@
 package com.surveySpringBoot.controller;
 
 import com.surveySpringBoot.model.Question;
+import com.surveySpringBoot.model.QuestionAnswer;
 import com.surveySpringBoot.model.Survey;
+import com.surveySpringBoot.model.SurveyComposition;
 import com.surveySpringBoot.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,6 +70,23 @@ public class QuestionController {
             return new ResponseEntity<>(questions, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(
+            value = "/createQuestion",
+            consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+    )
+    public ResponseEntity<HttpStatus> createQuestAns(@RequestBody Question question) {
+        try {
+            //System.out.println(question.getQuestion()+" "+question.getId_category());
+            Question newQuestion = repository.save(new Question(question.getQuestion(),question.getId_category()));
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            e.printStackTrace(System.out);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
