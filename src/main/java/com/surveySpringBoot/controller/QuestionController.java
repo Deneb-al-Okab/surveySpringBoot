@@ -78,7 +78,7 @@ public class QuestionController {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
-    public ResponseEntity<HttpStatus> createQuestAns(@RequestBody Question question) {
+    public ResponseEntity<HttpStatus> createQuestion(@RequestBody Question question) {
         try {
             //System.out.println(question.getQuestion()+" "+question.getId_category());
             Question newQuestion = repository.save(new Question(question.getQuestion(),question.getId_category()));

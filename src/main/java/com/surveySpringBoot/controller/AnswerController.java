@@ -83,7 +83,7 @@ public class AnswerController {
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
     )
-    public ResponseEntity<HttpStatus> createQuestAns(@RequestBody Answer answer) {
+    public ResponseEntity<HttpStatus> createAnswer(@RequestBody Answer answer) {
         try {
             Answer newAnswer = repository.save(new Answer(answer.getAnswer()));
             return new ResponseEntity<>(HttpStatus.CREATED);
