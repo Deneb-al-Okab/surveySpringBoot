@@ -1,9 +1,6 @@
 package com.surveySpringBoot.controller;
 
-import com.surveySpringBoot.model.Question;
-import com.surveySpringBoot.model.QuestionAnswer;
-import com.surveySpringBoot.model.Survey;
-import com.surveySpringBoot.model.SurveyComposition;
+import com.surveySpringBoot.model.*;
 import com.surveySpringBoot.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -80,6 +77,10 @@ public class QuestionController {
     )
     public ResponseEntity<HttpStatus> createQuestion(@RequestBody Question question) {
         try {
+            Optional<Question> _quest = repository.findByQuestionAndId_category(question.getQuestion(), question.getId_category());
+            if (_quest.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
             //System.out.println(question.getQuestion()+" "+question.getId_category());
             Question newQuestion = repository.save(new Question(question.getQuestion(),question.getId_category()));
             return new ResponseEntity<>(HttpStatus.CREATED);

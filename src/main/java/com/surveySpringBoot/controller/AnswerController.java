@@ -85,6 +85,10 @@ public class AnswerController {
     )
     public ResponseEntity<HttpStatus> createAnswer(@RequestBody Answer answer) {
         try {
+            Optional<Answer> _ans = repository.findByAnswerIgnoreCase(answer.getAnswer());
+            if (_ans.isPresent()) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
             Answer newAnswer = repository.save(new Answer(answer.getAnswer()));
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
